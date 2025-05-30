@@ -174,4 +174,4 @@ simulate_data_analytics(query_type)
 - 📘 [Grafana Dashboards](https://grafana.com/docs/grafana/latest/)
 - 📘 [Structlog Guide](https://structlog.org/)
 - 📘 [Docker Compose](https://docs.docker.com/compose/)
-
+- 📘 [Logging with docker promtail and grafana loki](https://ruanbekker.medium.com/logging-with-docker-promtail-and-grafana-loki-d920fd790ca8)
