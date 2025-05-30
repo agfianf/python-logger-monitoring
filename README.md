@@ -1,86 +1,209 @@
-# 🚀 Logging Python ke Loki + Grafana
+# 🚀 Python Logging with Loki + Grafana
 
-Sistem ini memungkinkan Anda melakukan logging aplikasi Python secara terpusat menggunakan stack modern:
-- **Python** (dengan structlog)
-- **Loki** (log aggregation)
+A modern centralized logging system for Python apps using the latest observability stack:
+- **Python** with structlog (structured logging)
+- **Loki** (log aggregation & storage)
 - **Promtail** (log shipper)
-- **Grafana** (visualisasi)
+- **Grafana** (visualization & dashboards)
+
+## 📋 What You'll Learn
+
+This tutorial will teach you:
+1. ✅ **Structured Logging** with Python structlog
+2. ✅ **Log Aggregation** using Loki
+3. ✅ **Log Shipping** with Promtail
+4. ✅ **Real-time Visualization** in Grafana
+5. ✅ **Business Logic Simulation** for testing
 
 ---
 
-## 🗂️ Struktur Folder
+## 🗂️ Project Structure
 
 ```
-.
-├── config/
-│   ├── loki-config.yml
-│   ├── promtail-config.yml
-│   ├── grafana-datasources.yml
-│   └── grafana-dashboards.yml
-├── dashboards/
+python-logging-loki/
+├── app/                          # 🐍 Python application
+│   ├── main.py                   # Entry point & request simulation
+│   ├── business_logic.py         # Simulated business operations
+│   └── log_config.py             # structlog configuration
+├── config/                       # ⚙️ Service configurations
+│   ├── loki-config.yml           # Loki configuration
+│   ├── promtail-config.yml       # Promtail log collection rules
+│   ├── grafana-datasources.yml   # Grafana data sources
+│   └── grafana-dashboards.yml    # Dashboard provisioning
+├── dashboards/                   # 📊 Grafana dashboards
 │   └── structlog-dashboard.json
-├── logs/
-├── main.py
-├── Dockerfile
-├── docker-compose.yml
-└── ...
+├── docker-compose.yml            # 🐳 Orchestration
+└── Dockerfile                    # 📦 Python app container
 ```
 
 ---
 
-## 🔗 Alur Logging
+## 🔄 How the System Works
 
-1. **Aplikasi Python** menulis log ke file di `logs/` dalam format JSON.
-2. **Promtail** membaca log dari file/container Docker dan mengirim ke **Loki**.
-3. **Loki** menyimpan dan mengindeks log.
-4. **Grafana** mengambil log dari Loki dan menampilkannya di dashboard.
+```mermaid
+graph TD
+    A[Python App] -->|JSON Logs| B[Docker Logs]
+    B -->|Scrape| C[Promtail]
+    C -->|Ship| D[Loki]
+    D -->|Query| E[Grafana]
+    E -->|Dashboard| F[User]
+```
 
----
+### Flow Details:
 
-## 🏁 Cara Menjalankan
-
-1. Pastikan semua file konfigurasi sudah ada di folder `config/` dan dashboard di folder `dashboards/`.
-2. Jalankan perintah berikut:
-   ```zsh
-   docker-compose up --build
-   ```
-3. Buka browser ke [http://localhost:3000](http://localhost:3000) untuk melihat dashboard Grafana.
-
----
-
-## ⚙️ Penjelasan Setiap Service
-
-- **app**: Aplikasi Python yang menghasilkan log JSON. Log disimpan di `./logs` dan diambil oleh Promtail.
-- **loki**: Sistem agregasi log. Konfigurasi di-mount dari `config/loki-config.yml`.
-- **promtail**: Agen pengumpul log. Membaca log dari container Docker dan file log, lalu mengirim ke Loki. Konfigurasi di `config/promtail-config.yml`.
-- **grafana**: Visualisasi log. Sudah terhubung otomatis ke Loki dan dashboard custom. Konfigurasi provisioning di `config/grafana-datasources.yml` dan `config/grafana-dashboards.yml`.
+1. **🐍 Python App** → Generates structured JSON logs using structlog
+2. **📋 Promtail** → Reads logs from Docker containers in real-time
+3. **🗄️ Loki** → Stores and indexes logs for fast querying
+4. **📊 Grafana** → Displays logs in interactive dashboards
 
 ---
 
-## 📝 Catatan Penting
+## 🚀 Quick Start (5-Minute Setup!)
 
-- Pastikan path file log yang dibaca Promtail sesuai dengan path log aplikasi (`./logs`).
-- Untuk pemula: cukup jalankan `docker-compose up --build` dan buka Grafana di browser.
-- Login Grafana sudah diatur anonymous, jadi tidak perlu login.
-- Untuk menambah/ubah dashboard, edit file di folder `dashboards/`.
+### Prerequisites
+- Docker & Docker Compose installed
+- Port 3000 (Grafana) available
+
+### 1. Clone & Run
+```bash
+# Clone this repository
+cd python-logging-loki
+
+# Start all services
+docker-compose up --build
+```
+
+### 2. Access the Dashboard
+- 🌐 **Grafana**: http://localhost:3000
+- 📊 **Dashboard**: Pre-provisioned and ready to use
+- 🔍 **Loki**: http://localhost:3100 (API)
+- 📋 **Promtail**: http://localhost:9080 (metrics)
+
+### 3. View Real-time Logs
+The dashboard instantly shows:
+- ✅ Request logs with response times
+- ✅ Error tracking and alerts
+- ✅ Business operation metrics
+- ✅ User activity patterns
 
 ---
 
-## 📚 Referensi & Dokumentasi Lanjutan
+## 📱 Business Logic Simulation
 
-- [Loki Documentation](https://grafana.com/docs/loki/latest/)
-- [Promtail Documentation](https://grafana.com/docs/loki/latest/clients/promtail/)
-- [Grafana Documentation](https://grafana.com/docs/grafana/latest/)
+This app simulates real-world business scenarios:
+
+### 🧑‍💼 User Operations
+```python
+# User registration with validation
+simulate_user_registration(user_data)
+
+# Authentication with security logging
+simulate_authentication(username, password)
+```
+
+### 🛒 E-commerce Operations  
+```python
+# Order processing with inventory & payment
+simulate_order_processing(order_data)
+
+# File upload with virus scanning
+simulate_file_upload(filename, file_size)
+```
+
+### 📊 Analytics & Performance
+```python
+# Data analytics with performance monitoring
+simulate_data_analytics(query_type)
+```
+
+### 🎯 Log Types Generated:
+- **INFO**: Successful operations
+- **WARNING**: Business logic warnings
+- **ERROR**: System/business errors  
+- **DEBUG**: Development details
 
 ---
 
-## 👀 Troubleshooting
+## ⚙️ Service Configuration
 
-- Jika log tidak muncul di Grafana:
-  - Cek apakah file log aplikasi sudah terisi.
-  - Cek status container Promtail dan Loki (`docker-compose logs promtail` / `loki`).
-  - Pastikan konfigurasi path log di Promtail sudah benar.
+### 🐍 Python App (`app/`)
+- **structlog**: Structured JSON logging
+- **Rotating logs**: Auto cleanup (10MB files)
+- **Sensitive data masking**: Password/token masking
+- **Request tracing**: UUID-based request tracking
+
+### 📋 Promtail (`config/promtail-config.yml`)
+```yaml
+# Key features:
+- Docker log discovery
+- JSON parsing
+- Label extraction
+- Health check filtering
+- Timestamp parsing
+```
+
+### 🗄️ Loki (`config/loki-config.yml`)
+- **Retention**: 30 days by default
+- **Indexing**: Optimized for JSON logs
+- **Performance**: Great for development
+
+### 📊 Grafana (`config/`)
+- **Auto-provisioning**: Data sources & dashboards
+- **Anonymous access**: No login required
+- **Custom dashboard**: Pre-built for structlog
 
 ---
 
-Selamat mencoba! 🎉
+## 🔍 Using the Dashboard
+
+### 1. **Overview Panel**
+- Total requests per time period
+- Error rate percentage
+- Average response time
+
+### 2. **Request Analysis**
+- HTTP methods breakdown
+- Status codes distribution
+- Slowest endpoints
+
+### 3. **Business Metrics**
+- User registrations
+- Order success/failure rates
+- File upload statistics
+
+### 4. **Error Tracking**
+- Error messages timeline
+- Error types breakdown
+- Affected users/operations
+
+### 5. **Custom Queries**
+Sample LogQL queries:
+```logql
+# All errors
+{job="python_app_logs"} |= "ERROR"
+
+# Slow requests (>2 seconds)
+{job="python_app_logs"} | json | response_time_ms > 2000
+
+# User authentication failures
+{job="python_app_logs"} | json | msg =~ ".*authentication.*" | level = "WARNING"
+
+# Order processing by status
+{job="python_app_logs"} | json | path =~ "/orders.*" | status_code != "200"
+```
+## Loki Dashboard Results
+
+![Loki Dashboard](./assets/loki_1.png)
+![Loki Dashboard](./assets/loki_2.png)
+![Loki Dashboard](./assets/loki_3.png)
+![Loki Dashboard](./assets/loki_4.png)
+---
+
+## 📖 References
+
+- 📘 [Loki Documentation](https://grafana.com/docs/loki/latest/)
+- 📘 [Promtail Configuration](https://grafana.com/docs/loki/latest/clients/promtail/)
+- 📘 [Grafana Dashboards](https://grafana.com/docs/grafana/latest/)
+- 📘 [Structlog Guide](https://structlog.org/)
+- 📘 [Docker Compose](https://docs.docker.com/compose/)
+

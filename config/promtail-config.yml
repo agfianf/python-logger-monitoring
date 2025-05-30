@@ -1,0 +1,90 @@
+# https://grafana.com/docs/loki/latest/clients/promtail/configuration/
+# https://docs.docker.com/engine/api/v1.41/#operation/ContainerList
+server:
+  http_listen_port: 9080          # Port untuk Promtail web interface
+  grpc_listen_port: 0            # Disable gRPC (tidak diperlukan)
+
+positions:
+  filename: /tmp/positions.yaml   # File untuk menyimpan posisi baca terakhir
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push    # URL endpoint Loki untuk push logs
+
+scrape_configs:
+  - job_name: python_app_logs
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+        # We only want to scrape logs from containers with the label logging=promtail
+        filters:
+          - name: label
+            values: ["logging=promtail"]
+    relabel_configs:
+      # Relabeling: container_name to container
+      - source_labels: ['__meta_docker_container_name']
+        regex: '/(.*)'
+        target_label: 'container'
+      
+      # Relabeling: container_log_stream to logstream
+      - source_labels: ['__meta_docker_container_log_stream']
+        target_label: 'logstream'
+      
+      # Relabeling: logging_jobname to job
+      - source_labels: ['__meta_docker_container_label_logging_jobname']
+        target_label: 'job'
+
+      - source_labels: ['__meta_docker_container_log_path']
+        target_label: '__path__'
+
+      - source_labels: ['__meta_docker_container_label_com_docker_compose_project']
+        target_label: 'namespace'
+    
+    pipeline_stages:
+      # Parse JSON logs from Python application
+      - json:
+          expressions:
+            # Extract common fields from structured logs
+            xtime: "xtime"           # timestamp from structlog
+            level: "level"           # log level
+            msg: "msg"              # log message
+            request_id: "request_id" # request tracking
+            user_id: "user_id"      # user context
+            method: "method"        # HTTP method
+            path: "path"           # API path
+            status_code: "status_code" # HTTP status
+            response_time_ms: "response_time_ms" # performance metric
+            error: "error"         # error messages
+            operation: "operation" # business operation
+            # Additional business context
+            order_id: "order_id"
+            username: "username"
+            filename: "filename"
+            query_type: "query_type"
+            session_id: "session_id"
+            file_id: "file_id"
+      
+      # Use the extracted timestamp from logs
+      - timestamp:
+          source: xtime
+          format: RFC3339Nano
+      
+      # Filter and routing rules
+      - match:
+          selector: '{job="python_app_logs"}'
+          stages:
+            # Drop health check logs to reduce noise (optional)
+            - drop:
+                expression: "GET /healthz"
+            
+            # Drop debug logs in production (optional)
+            # - drop:
+            #     expression: '"level":"DEBUG"'
+      
+      # Extract labels for better querying in Grafana
+      - labels:
+          level: ""                # Log level for filtering
+          method: ""              # HTTP method
+          status_code: ""         # Response status
+          path: ""           # Business operation type
+          container: ""           # Container name
+          job: ""                # Job name
