@@ -156,43 +156,6 @@ simulate_data_analytics(query_type)
 
 ## 🔍 Using the Dashboard
 
-### 1. **Overview Panel**
-- Total requests per time period
-- Error rate percentage
-- Average response time
-
-### 2. **Request Analysis**
-- HTTP methods breakdown
-- Status codes distribution
-- Slowest endpoints
-
-### 3. **Business Metrics**
-- User registrations
-- Order success/failure rates
-- File upload statistics
-
-### 4. **Error Tracking**
-- Error messages timeline
-- Error types breakdown
-- Affected users/operations
-
-### 5. **Custom Queries**
-Sample LogQL queries:
-```logql
-# All errors
-{job="python_app_logs"} |= "ERROR"
-
-# Slow requests (>2 seconds)
-{job="python_app_logs"} | json | response_time_ms > 2000
-
-# User authentication failures
-{job="python_app_logs"} | json | msg =~ ".*authentication.*" | level = "WARNING"
-
-# Order processing by status
-{job="python_app_logs"} | json | path =~ "/orders.*" | status_code != "200"
-```
-## Loki Dashboard Results
-
 ![Loki Dashboard](./assets/loki_1.png)
 ![Loki Dashboard](./assets/loki_2.png)
 ![Loki Dashboard](./assets/loki_3.png)
