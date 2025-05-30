@@ -17,6 +17,18 @@ This tutorial will teach you:
 
 ---
 
+## 🔍 Dashboard Grafana Result
+<details>
+<summary>Click to show demo loki</summary>
+
+![Loki Dashboard](./assets/loki_1.png)
+![Loki Dashboard](./assets/loki_2.png)
+![Loki Dashboard](./assets/loki_3.png)
+![Loki Dashboard](./assets/loki_4.png)
+</details>
+
+---
+
 ## 🗂️ Project Structure
 
 ```
@@ -152,14 +164,7 @@ simulate_data_analytics(query_type)
 - **Anonymous access**: No login required
 - **Custom dashboard**: Pre-built for structlog
 
----
 
-## 🔍 Using the Dashboard
-
-![Loki Dashboard](./assets/loki_1.png)
-![Loki Dashboard](./assets/loki_2.png)
-![Loki Dashboard](./assets/loki_3.png)
-![Loki Dashboard](./assets/loki_4.png)
 ---
 
 ## 📖 References
