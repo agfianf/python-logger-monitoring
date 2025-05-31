@@ -17,6 +17,15 @@ This tutorial will teach you:
 4. ✅ **Real-time Visualization** in Grafana
 5. ✅ **Business Logic Simulation** for testing
 
+## Running this:
+
+```bash
+make up
+# or 
+docker-compose up --build
+```
+
+
 ---
 
 ## 🔍 Dashboard Grafana Result
