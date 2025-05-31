@@ -1,17 +1,17 @@
-version: '3.8'
+version: '3.9'
 
 services:
   # Python application
   app:
     build: .
-    container_name: logging-app
+    container_name: auth-service
     environment:
-      - NAME_APP=you-can-do-it
+      - NAME_APP=auth-service-env
     depends_on:
       - loki
     labels:
       logging: "promtail"
-      logging_jobname: "ycdi"
+      logging_jobname: "jobname-auth-service"
     logging:
       driver: "json-file"
       options:
@@ -22,14 +22,14 @@ services:
 
   app2:
     build: .
-    container_name: logging-app-2
+    container_name: learn-management-system
     environment:
-      - NAME_APP=learn-management-system
+      - NAME_APP=learn-management-system-env
     depends_on:
       - loki
     labels:
       logging: "promtail"
-      logging_jobname: "lms"
+      logging_jobname: "jobname-learn-management-system"
     logging:
       driver: "json-file"
       options:

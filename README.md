@@ -18,6 +18,8 @@ This tutorial will teach you:
 ---
 
 ## 🔍 Dashboard Grafana Result
+
+![Loki Dashboard](./assets/loki_0.png)
 <details>
 <summary>Click to show demo loki</summary>
 
@@ -164,7 +166,6 @@ simulate_data_analytics(query_type)
 - **Anonymous access**: No login required
 - **Custom dashboard**: Pre-built for structlog
 
-
 ---
 
 ## 📖 References
@@ -175,3 +176,5 @@ simulate_data_analytics(query_type)
 - 📘 [Structlog Guide](https://structlog.org/)
 - 📘 [Docker Compose](https://docs.docker.com/compose/)
 - 📘 [Logging with docker promtail and grafana loki](https://ruanbekker.medium.com/logging-with-docker-promtail-and-grafana-loki-d920fd790ca8)
+- 📘 [Docker SD Configs on Promtail](https://grafana.com/docs/loki/latest/send-data/promtail/configuration/#docker_sd_configs)
+- 📺 [YouTube: 6 Easy Ways to Improve your Log Dashboards with Grafana and Loki](https://www.youtube.com/watch?v=EPLvB1eVJJk)
