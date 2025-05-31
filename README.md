@@ -1,5 +1,7 @@
 # 🚀 Python Logging with Loki + Grafana
 
+![Overview Workflow](./assets/workflow.gif)
+
 A modern centralized logging system for Python apps using the latest observability stack:
 - **Python** with structlog (structured logging)
 - **Loki** (log aggregation & storage)
@@ -409,3 +411,4 @@ simulate_data_analytics(query_type)
 - 📘 [Logging with docker promtail and grafana loki](https://ruanbekker.medium.com/logging-with-docker-promtail-and-grafana-loki-d920fd790ca8)
 - 📘 [Docker SD Configs on Promtail](https://grafana.com/docs/loki/latest/send-data/promtail/configuration/#docker_sd_configs)
 - 📺 [YouTube: 6 Easy Ways to Improve your Log Dashboards with Grafana and Loki](https://www.youtube.com/watch?v=EPLvB1eVJJk)
+- 📖 [Blog: Setup Grafana and Loki](https://blog.quentin-favrie.net/2021/05/31/setup-grafana-and-loki/)
